@@ -1,0 +1,122 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class TicTacToe {
+
+    static char[][] board = {
+            {' ', ' ', ' '},
+            {' ', ' ', ' '},
+            {' ', ' ', ' '}
+    };
+
+    // UC6: Place move
+    public static boolean placeMove(int row, int col, char symbol) {
+        if (row >= 0 && row < 3 && col >= 0 && col < 3) {
+            if (board[row][col] == ' ') {
+                board[row][col] = symbol;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // UC7: Computer random move
+    public static void computerMove(char symbol) {
+        Random rand = new Random();
+        boolean placed = false;
+
+        while (!placed) {
+            int slot = rand.nextInt(9) + 1;
+            int row = (slot - 1) / 3;
+            int col = (slot - 1) % 3;
+
+            placed = placeMove(row, col, symbol);
+        }
+
+        System.out.println("Computer played.");
+    }
+
+    // Display board
+    public static void displayBoard() {
+        System.out.println("-------------");
+        for (int i = 0; i < 3; i++) {
+            System.out.print("| ");
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " | ");
+            }
+            System.out.println();
+            System.out.println("-------------");
+        }
+    }
+
+    // Check win
+    public static boolean checkWin(char s) {
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == s && board[i][1] == s && board[i][2] == s) return true;
+            if (board[0][i] == s && board[1][i] == s && board[2][i] == s) return true;
+        }
+        if (board[0][0] == s && board[1][1] == s && board[2][2] == s) return true;
+        if (board[0][2] == s && board[1][1] == s && board[2][0] == s) return true;
+
+        return false;
+    }
+
+    // Check draw
+    public static boolean isDraw() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == ' ') return false;
+            }
+        }
+        return true;
+    }
+
+    // UC8: Game loop
+    public static void gameLoop() {
+        Scanner sc = new Scanner(System.in);
+        char currentPlayer = 'X'; // Human starts
+        boolean gameOver = false;
+
+        while (!gameOver) {
+            displayBoard();
+
+            if (currentPlayer == 'X') {
+                System.out.print("Enter position (1-9): ");
+                int slot = sc.nextInt();
+
+                int row = (slot - 1) / 3;
+                int col = (slot - 1) % 3;
+
+                if (!placeMove(row, col, 'X')) {
+                    System.out.println("Invalid move! Try again.");
+                    continue; // retry same turn
+                }
+            } else {
+                computerMove('O');
+            }
+
+            // Check win
+            if (checkWin(currentPlayer)) {
+                displayBoard();
+                System.out.println(currentPlayer + " wins!");
+                gameOver = true;
+            }
+            // Check draw
+            else if (isDraw()) {
+                displayBoard();
+                System.out.println("It's a draw!");
+                gameOver = true;
+            }
+            // Switch turn
+            else {
+                currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+            }
+        }
+
+        sc.close();
+    }
+
+    public static void main(String[] args) {
+        gameLoop();
+    }
+}
