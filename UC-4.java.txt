@@ -1,0 +1,22 @@
+public class TicTacToe {
+
+    // Utility method to convert slot → row, col
+    public static int[] convertSlotToIndex(int slot) {
+
+        // Convert to zero-based index
+        int row = (slot - 1) / 3;
+        int col = (slot - 1) % 3;
+
+        return new int[]{row, col};
+    }
+
+    // Optional test
+    public static void main(String[] args) {
+        int slot = 5;
+
+        int[] index = convertSlotToIndex(slot);
+
+        System.out.println("Slot: " + slot);
+        System.out.println("Row: " + index[0] + ", Col: " + index[1]);
+    }
+}
