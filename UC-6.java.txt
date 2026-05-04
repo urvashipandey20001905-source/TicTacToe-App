@@ -1,0 +1,52 @@
+public class TicTacToe {
+
+    // 3x3 board
+    static char[][] board = {
+            {' ', ' ', ' '},
+            {' ', ' ', ' '},
+            {' ', ' ', ' '}
+    };
+
+    // Method to place a move
+    public static boolean placeMove(int row, int col, char symbol) {
+        // Check if position is valid and empty
+        if (row >= 0 && row < 3 && col >= 0 && col < 3) {
+            if (board[row][col] == ' ') {
+                board[row][col] = symbol; // State update
+                return true;
+            } else {
+                System.out.println("Cell already occupied!");
+                return false;
+            }
+        } else {
+            System.out.println("Invalid position!");
+            return false;
+        }
+    }
+
+    // Method to display board
+    public static void displayBoard() {
+        System.out.println("-------------");
+        for (int i = 0; i < 3; i++) {
+            System.out.print("| ");
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " | ");
+            }
+            System.out.println();
+            System.out.println("-------------");
+        }
+    }
+
+    // Example usage
+    public static void main(String[] args) {
+        displayBoard();
+
+        // Human move
+        placeMove(0, 0, 'X');
+
+        // Computer move
+        placeMove(1, 1, 'O');
+
+        displayBoard();
+    }
+}
